@@ -18,9 +18,9 @@ function Header() {
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
         <a
-          href="#inicio"
+          href="%inicio"
           className={styles.brand}
-          onClick={(event) => handleNavClick(event, "#inicio")}
+          onClick={(event) => handleNavClick(event, "%inicio")}
         >
           <span className={styles.seal} aria-hidden="true">易</span>
           <span className={styles.brandText}>
