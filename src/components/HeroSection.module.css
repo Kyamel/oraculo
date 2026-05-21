@@ -1,0 +1,191 @@
+.hero {
+  background:
+    radial-gradient(
+      circle at 78% 12%,
+      var(--paper-raised),
+      var(--paper) 58%
+    );
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(36px, 6vw, 76px);
+  align-items: center;
+  padding-block: clamp(56px, 9vw, 108px);
+}
+
+/* --- Coluna de texto --- */
+.title {
+  font-size: clamp(2.4rem, 5.4vw, 3.9rem);
+  letter-spacing: -0.02em;
+  margin-block: 8px 0;
+}
+
+.lead {
+  margin-top: 22px;
+  font-size: clamp(1.04rem, 1.4vw, 1.2rem);
+  color: var(--ink-soft);
+  max-width: 30em;
+}
+
+.actions {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 14px 28px;
+  flex-wrap: wrap;
+}
+
+.secondaryLink {
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 2px solid var(--line-strong);
+  padding-bottom: 2px;
+  transition: color 0.16s ease, border-color 0.16s ease;
+}
+.secondaryLink:hover {
+  color: var(--cinnabar);
+  border-bottom-color: var(--cinnabar);
+}
+
+/* --- Coluna da figura --- */
+.figureWrap {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 440px);
+}
+
+.figure {
+  margin: 0;
+  padding: 12px;
+  background-color: var(--paper-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.figureImg {
+  width: 100%;
+  height: clamp(380px, 50vh, 540px);
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 6px;
+}
+
+.figureCaption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* --- Cartão do hexagrama que se alterna --- */
+.wisdom {
+  position: absolute;
+  left: -24px;
+  bottom: 64px;
+  width: min(310px, 84%);
+  background-color: var(--paper-raised);
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--cinnabar);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  padding: 18px;
+}
+
+.wisdomBody {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  animation: fade-up 0.5s ease both;
+}
+
+.wisdomName {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.wisdomChinese {
+  font-size: 0.92rem;
+  color: var(--cinnabar);
+}
+
+.wisdomPhrase {
+  margin-top: 4px;
+  font-size: 0.86rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.wisdomFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.pauseBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+  padding: 2px 4px;
+  transition: color 0.16s ease;
+}
+.pauseBtn:hover {
+  color: var(--cinnabar);
+}
+
+.dots {
+  display: flex;
+  gap: 7px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.16s ease, transform 0.16s ease;
+}
+.dot:hover {
+  transform: scale(1.2);
+}
+.dotActive {
+  background-color: var(--cinnabar);
+  border-color: var(--cinnabar);
+}
+
+/* --- Responsivo --- */
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+  }
+  .figureWrap {
+    justify-self: center;
+  }
+  .wisdom {
+    position: static;
+    width: 100%;
+    margin-top: 18px;
+  }
+}
