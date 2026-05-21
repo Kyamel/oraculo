@@ -36,7 +36,7 @@ function Home() {
         <HeroSection />
 
         {/* ---------- O que é o I Ching ---------- */}
-        <section id="sobre" className="section section--deep">
+        <section id="sobre" className="section">
           <div className="container">
             <Reveal>
               <SectionHeading
@@ -98,7 +98,7 @@ function Home() {
         </section>
 
         {/* ---------- Como funciona a consulta ---------- */}
-        <section id="como-funciona" className="section">
+        <section id="como-funciona" className="section section--deep">
           <div className="container">
             <Reveal>
               <SectionHeading
@@ -153,7 +153,7 @@ function Home() {
         </section>
 
         {/* ---------- Contexto histórico-cultural ---------- */}
-        <section id="historia" className="section section--deep">
+        <section id="historia" className="section">
           <div className="container">
             <Reveal>
               <SectionHeading
@@ -180,7 +180,7 @@ function Home() {
         </section>
 
         {/* ---------- Como interpretar o resultado ---------- */}
-        <section id="interpretar" className="section">
+        <section id="interpretar" className="section section--deep">
           <div className="container">
             <Reveal>
               <SectionHeading

@@ -3,7 +3,7 @@
     radial-gradient(
       circle at 78% 12%,
       var(--paper-raised),
-      var(--paper) 58%
+      var(--paper-deep) 58%
     );
   border-bottom: 1px solid var(--line);
   overflow: hidden;
