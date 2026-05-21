@@ -192,3 +192,10 @@ ul { margin: 0; }
 }
 
 html { scroll-behavior: smooth; }
+
+/* Compensa o cabeçalho fixo ao rolar até uma seção. */
+section[id],
+main[id] { scroll-margin-top: 69px; }
+
+/* O <main> recebe foco pelo "pular para o conteúdo" — sem contorno visível. */
+main[id]:focus { outline: none; }

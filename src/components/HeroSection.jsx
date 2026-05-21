@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import OracleButton from "./OracleButton";
 import Hexagram from "./Hexagram";
 import { heroWisdom, consultNotice } from "../data/landingContent";
+import { scrollToSection } from "../lib/navigation";
 import heroImg from "../assets/iching/hero-song-print.jpg";
 import styles from "./HeroSection.module.css";
 
@@ -48,7 +49,14 @@ function HeroSection() {
             <OracleButton notice={consultNotice}>
               Perguntar ao Oráculo
             </OracleButton>
-            <a href="#sobre" className={styles.secondaryLink}>
+            <a
+              href="#sobre"
+              className={styles.secondaryLink}
+              onClick={(event) => {
+                event.preventDefault();
+                scrollToSection("sobre");
+              }}
+            >
               Entender antes de começar →
             </a>
           </div>

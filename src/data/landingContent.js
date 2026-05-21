@@ -12,10 +12,10 @@ import leibnizDiagram from "../assets/iching/leibniz-diagram.jpg";
 
 /* --- Navegação por âncoras dentro da própria landing page --- */
 export const navLinks = [
-  { href: "#sobre", label: "O que é" },
-  { href: "#como-funciona", label: "Como funciona" },
-  { href: "#historia", label: "História" },
-  { href: "#interpretar", label: "Interpretar" },
+  { href: "%sobre", label: "O que é" },
+  { href: "%como-funciona", label: "Como funciona" },
+  { href: "%historia", label: "História" },
+  { href: "%interpretar", label: "Interpretar" },
 ];
 
 /* --- Hexagramas que se alternam no herói (texto dinâmico).

@@ -7,6 +7,7 @@ import InfoCard from "../components/InfoCard";
 import Hexagram from "../components/Hexagram";
 import OracleButton from "../components/OracleButton";
 import Reveal from "../components/Reveal";
+import { scrollToSection } from "../lib/navigation";
 import { steps, lineTypes, culturalCards, consultNotice } from "../data/landingContent";
 import styles from "./Home.module.css";
 
@@ -18,13 +19,20 @@ import styles from "./Home.module.css";
 function Home() {
   return (
     <>
-      <a className="skip-link" href="#conteudo">
+      <a
+        className="skip-link"
+        href="#conteudo"
+        onClick={(event) => {
+          event.preventDefault();
+          scrollToSection("conteudo", { focus: true });
+        }}
+      >
         Pular para o conteúdo
       </a>
 
       <Header />
 
-      <main id="conteudo">
+      <main id="conteudo" tabIndex={-1}>
         <HeroSection />
 
         {/* ---------- O que é o I Ching ---------- */}
