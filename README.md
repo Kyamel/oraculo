@@ -777,3 +777,31 @@ npm run lint
 ```
 
 O servidor de desenvolvimento do Vite sobe por padrão em `http://localhost:5173`.
+
+---
+
+## Deploy no GitHub Pages
+
+O projeto gera um bundle 100% estático e está pronto para o GitHub Pages.
+
+**Configuração já feita:**
+
+- `vite.config.js` usa `base: './'` (caminhos relativos) — o bundle funciona
+  em qualquer subcaminho, como `usuario.github.io/oraculo/`.
+- O roteamento usa **`HashRouter`** (`src/App.jsx`): as rotas vivem no
+  fragmento `#` da URL, então não há erro 404 ao recarregar uma página numa
+  hospedagem estática sem fallback de servidor.
+- O workflow `.github/workflows/deploy.yml` faz build e deploy
+  automaticamente a cada push na branch `main`.
+
+**Passo único a fazer no GitHub** (apenas na primeira vez):
+
+1. No repositório, vá em **Settings → Pages**.
+2. Em **Build and deployment → Source**, selecione **GitHub Actions**.
+3. Faça um push na `main` (ou rode o workflow manualmente na aba **Actions**).
+
+Ao terminar, o site fica disponível em
+`https://<seu-usuario>.github.io/<nome-do-repositório>/`.
+
+Para gerar o bundle localmente sem publicar: `npm run build` (saída na
+pasta `dist/`).
