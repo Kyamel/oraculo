@@ -40,21 +40,7 @@ O projeto já está inicializado. Stack atual:
 | Backend | **Nenhum** — aplicação 100% front-end |
 | Banco de dados | **Nenhum** — dados em arquivos locais; sessão em `localStorage` |
 
-> **Nota sobre linguagem:** este README descreve os tipos de dados em **JavaScript com JSDoc**. O projeto está em JavaScript puro. Se no futuro você quiser a segurança de tipos do TypeScript, os `@typedef` deste documento servem de base direta para a migração — mas, para um projeto de IHC focado em interface, manter JavaScript reduz o esforço de configuração e mantém o foco na experiência do usuário.
-
----
-
-## Estado atual do código
-
-Levantamento feito sobre o código já existente. **Estes pontos precisam ser tratados antes ou durante a Etapa 1.**
-
-| Arquivo | Situação | Ação recomendada |
-|---|---|---|
-| `src/routes/Home.jsx` | **Erro de build.** Possui dois elementos JSX irmãos (`<section>` e `<Footer/>`) sem um Fragment (`<>...</>`) envolvendo. O app não compila como está. | Envolver o retorno em `<>...</>`. |
-| `src/routes/About.jsx` | Contém um método de **numerologia/horóscopo** ("some os dígitos do ano de nascimento"). Isso **não é o I Ching** — é outra prática. O I Ching usa moedas/varetas + 64 hexagramas. | Substituir pelo conteúdo histórico-cultural correto descrito neste README. |
-| `src/routes/About.jsx` | Usa uma imagem via *hotlink* de site externo (`altoastral.joaobidu.com.br`). Instável, quebra offline e tem risco de direitos autorais. | Trocar por asset local em `src/assets/` ou `public/`. |
-| `src/components/Footer.jsx` | Possui uma tag `<a>` vazia, sem texto nem conteúdo acessível. | Adicionar label/conteúdo ou remover. |
-| `src/App.jsx` | Importa `useState` sem usar; define só 2 rotas; não há rota 404. | Limpar import; adicionar rotas do fluxo + rota `*` (404). |
+> **Nota sobre linguagem:** este README descreve os tipos de dados em **JavaScript com JSDoc**. O projeto está em JavaScript puro. Se no futuro você quiser a segurança de tipos do TypeScript, os `@typedef` deste documento servem de base direta para a migração.
 
 ---
 
