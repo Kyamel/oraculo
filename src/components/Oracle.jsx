@@ -189,7 +189,7 @@ export default function Oracle() {
               Mantenha a pergunta em mente e lance as três moedas seis vezes.
             </p>
 
-            <div className={styles.coins}>
+            <div className={styles.coins} aria-hidden="true">
               {coins.map((coin, index) => (
                 <span
                   key={index}

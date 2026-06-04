@@ -13,6 +13,7 @@ function Footer() {
         rel="noopener noreferrer"
       >
         Sobre o I Ching
+        <span className="sr-only"> (abre em nova aba)</span>
       </a>
       <a
         href="https://github.com/adamblvck/iching-wilhelm-dataset/blob/master/data/iching_wilhelm_translation.js"
@@ -20,6 +21,7 @@ function Footer() {
         rel="noopener noreferrer"
       >
         Traduções (Wilhelm dataset)
+        <span className="sr-only"> (abre em nova aba)</span>
       </a>
       <a
         href="https://github.com/Kyamel/oraculo"
@@ -27,6 +29,7 @@ function Footer() {
         rel="noopener noreferrer"
       >
         Código no GitHub
+        <span className="sr-only"> (abre em nova aba)</span>
       </a>
     </footer>
   );
