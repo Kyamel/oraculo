@@ -10,7 +10,7 @@ const ROTATION_MS = 5500;
 const FEATURED = [1, 2, 11, 24, 52, 61];
 
 // Mostra só um trecho do texto no preview (a leitura completa vive em /leitura).
-function preview(text, max = 80) {
+function preview(text, max = 60) {
   const clean = String(text || "").trim();
   if (clean.length <= max) return clean;
   const cut = clean.slice(0, max);

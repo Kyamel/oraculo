@@ -23,13 +23,14 @@
 .input {
   width: 100%;
   font: inherit;
+  line-height: 1.5;
   color: var(--ink);
   background: var(--paper-raised);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
-  resize: vertical;
-  min-height: 92px;
+  resize: none;
+  overflow: hidden;
 }
 .input::placeholder {
   color: var(--ink-faint);
@@ -37,6 +38,18 @@
 .input:focus-visible {
   outline: 3px solid var(--cinnabar);
   outline-offset: 2px;
+}
+
+/* Contador de caracteres restantes do campo de pergunta. */
+.counter {
+  margin-top: -4px;
+  align-self: flex-end;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+.counterLow {
+  color: var(--cinnabar);
+  font-weight: 600;
 }
 
 /* --- Botões --- */

@@ -43,6 +43,13 @@ function lookupHexagram(lines) {
 }
 
 const TOTAL_LINES = 6;
+const MAX_QUESTION = 280;
+
+// Ajusta a altura do textarea ao conteúdo (cresce conforme quebra linha).
+function autoGrow(el) {
+  el.style.height = "auto";
+  el.style.height = `${el.scrollHeight}px`;
+}
 
 export default function Oracle() {
   const navigate = useNavigate();
@@ -59,6 +66,7 @@ export default function Oracle() {
   const modalRef = useRef(null);
 
   const trimmedQuestion = question.trim();
+  const remaining = MAX_QUESTION - question.length;
   const isComplete = lines.length === TOTAL_LINES;
   const result = useMemo(
     () => (isComplete ? lookupHexagram(lines) : null),
@@ -129,11 +137,21 @@ export default function Oracle() {
             id="question"
             className={styles.input}
             value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-            rows={3}
-            maxLength={280}
+            onChange={(event) => {
+              setQuestion(event.target.value);
+              autoGrow(event.target);
+            }}
+            rows={2}
+            maxLength={MAX_QUESTION}
             placeholder="Ex.: Como devo lidar com a mudança que estou enfrentando?"
           />
+          <p
+            className={`${styles.counter} ${
+              remaining <= 20 ? styles.counterLow : ""
+            }`}
+          >
+            {question.length}/{MAX_QUESTION}
+          </p>
           <button
             type="submit"
             className={styles.primary}
