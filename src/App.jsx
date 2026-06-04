@@ -5,8 +5,11 @@ import Footer from "./components/Footer";
 
 /**
  * Rotas:
- *  - "/"             → consulta (hero + pergunta + lançamento das moedas)
- *  - "/leitura/:hex" → leitura do hexagrama (conteúdo Wilhelm)
+ *  - "/"                       → consulta (hero + pergunta + moedas)
+ *  - "/leitura/:hex"           → leitura do hexagrama (conteúdo Wilhelm)
+ *  - "/leitura/:hex/:changing" → idem, com as posições das linhas mutáveis
+ *                                (ex.: /leitura/3/14) — reconstrói marcas e
+ *                                hexagrama transformado em refresh/link direto
  * O Footer fica fora das rotas, então aparece nas duas páginas.
  * HashRouter mantém o roteamento no fragmento (#), funcionando em
  * hospedagem estática sem configuração de servidor.
@@ -20,6 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Oracle />} />
         <Route path="/leitura/:hex" element={<Reading />} />
+        <Route path="/leitura/:hex/:changing" element={<Reading />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />

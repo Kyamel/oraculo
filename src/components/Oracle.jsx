@@ -11,7 +11,7 @@ const byBinary = new Map(
 );
 
 // Método das três moedas: cada moeda vale 2 ou 3; a soma decide a linha.
-// 6 e 8 = yin, 7 e 9 = yang. (Sem linhas mutáveis, para manter simples.)
+// 6 = yin mutável, 7 = yang, 8 = yin, 9 = yang mutável.
 function throwCoin() {
   return Math.random() < 0.5
     ? { face: "cara", value: 3, glyph: "乾" }
@@ -21,7 +21,16 @@ function throwCoin() {
 function buildLine() {
   const coins = [throwCoin(), throwCoin(), throwCoin()];
   const value = coins.reduce((sum, coin) => sum + coin.value, 0);
-  return { coins, yang: value === 7 || value === 9 };
+  return {
+    coins,
+    yang: value === 7 || value === 9,
+    changing: value === 6 || value === 9,
+  };
+}
+
+// Linha desenhável pelo <Hexagram> (tipo + marca de mutação).
+function toDrawLine(line) {
+  return { type: line.yang ? "yang" : "yin", changing: line.changing };
 }
 
 // As linhas saem de baixo para cima; o binário do dataset é de cima para baixo.
@@ -55,6 +64,7 @@ export default function Oracle() {
     () => (isComplete ? lookupHexagram(lines) : null),
     [isComplete, lines],
   );
+
 
   // Foco vai para o modal ao abrir.
   useEffect(() => {
@@ -98,7 +108,12 @@ export default function Oracle() {
 
   const handleReveal = () => {
     if (!result) return;
-    navigate(`/leitura/${result.hex}`, { state: { question: trimmedQuestion } });
+    // Posições (1 a 6, de baixo para cima) das linhas mutáveis, ex.: "14".
+    const changing = lines.map((line, i) => (line.changing ? i + 1 : "")).join("");
+    const path = changing
+      ? `/leitura/${result.hex}/${changing}`
+      : `/leitura/${result.hex}`;
+    navigate(path, { state: { question: trimmedQuestion } });
   };
 
   return (
@@ -177,8 +192,9 @@ export default function Oracle() {
 
             <div className={styles.castStage}>
               <Hexagram
-                lines={lines.map((line) => (line.yang ? "yang" : "yin"))}
+                lines={lines.map(toDrawLine)}
                 width={120}
+                surface="var(--paper-raised)"
                 label={`Hexagrama em formação: ${lines.length} de ${TOTAL_LINES} linhas`}
               />
             </div>

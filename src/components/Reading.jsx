@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import {
+  Link,
   Navigate,
   useLocation,
   useNavigate,
@@ -8,10 +9,22 @@ import {
 import { Hexagram } from "./Hexagram.jsx";
 import hexagrams from "../data/i-ching-basic.js";
 import wilhelm from "../data/iching_wilhelm_translation.js";
-import styles from "./Oracle.module.css";
+import styles from "./Reading.module.css";
 
-// Índice por número do hexagrama, para reconstruir o resultado pela URL.
+// Índices para reconstruir o resultado pela URL.
 const byHex = new Map(hexagrams.map((h) => [h.hex, h]));
+const byBinary = new Map(
+  hexagrams.map((h) => [String(h.binary).padStart(6, "0"), h]),
+);
+
+// Binário (cima→baixo) → linhas de baixo para cima ("yang"/"yin").
+function binaryToBottomUp(binary) {
+  return String(binary)
+    .padStart(6, "0")
+    .split("")
+    .reverse()
+    .map((bit) => (bit === "1" ? "yang" : "yin"));
+}
 
 function trigramLabel(trigram) {
   if (!trigram) return "";
@@ -20,27 +33,60 @@ function trigramLabel(trigram) {
 }
 
 /**
- * Página /leitura/:hex: mostra o hexagrama e o conteúdo da tradução
- * Wilhelm-Baynes. O hexagrama é reconstruído pelo número na URL (funciona em
- * refresh/link direto); a pergunta, quando houver, chega pelo state. Número
- * inválido volta para a consulta.
+ * Página /leitura/:hex/:changing: mostra o hexagrama e o conteúdo da tradução
+ * Wilhelm-Baynes. Tudo é reconstruído pela URL — número do hexagrama mais as
+ * posições das linhas mutáveis (ex.: /leitura/3/14) —, então as marcas de
+ * mutação e o hexagrama transformado funcionam em refresh/link direto. Só a
+ * pergunta, quando houver, chega pelo state. Número inválido volta para a
+ * consulta.
  */
 export default function Reading() {
   const navigate = useNavigate();
-  const { hex } = useParams();
+  const { hex, changing } = useParams();
   const { state } = useLocation();
   const headingRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     headingRef.current?.focus();
-  }, [hex]);
+  }, [hex, changing]);
 
   const result = byHex.get(Number(hex)) || null;
   if (!result) return <Navigate to="/" replace />;
 
   const question = state?.question;
   const detail = wilhelm[String(result.hex)] || null;
+
+  // Posições mutáveis (1 a 6, de baixo para cima) vindas da URL, ex.: "14".
+  const changingSet = new Set(
+    String(changing || "")
+      .split("")
+      .map(Number)
+      .filter((n) => n >= 1 && n <= 6),
+  );
+
+  // Linhas desenháveis (de baixo para cima) com a marca de mutação.
+  const drawnLines = binaryToBottomUp(result.binary).map((type, i) => ({
+    type,
+    changing: changingSet.has(i + 1),
+  }));
+
+  // Hexagrama transformado: inverte só as linhas mutáveis.
+  let changed = null;
+  if (changingSet.size) {
+    const changedBinary = drawnLines
+      .map((line) => {
+        const type = line.changing
+          ? line.type === "yang"
+            ? "yin"
+            : "yang"
+          : line.type;
+        return type === "yang" ? "1" : "0";
+      })
+      .reverse()
+      .join("");
+    changed = byBinary.get(changedBinary) || null;
+  }
 
   return (
     <main id="conteudo" className={styles.oracle}>
@@ -56,8 +102,9 @@ export default function Reading() {
           <div className={styles.resultBody}>
             <div className={styles.hexStage}>
               <Hexagram
-                binary={result.binary}
-                width={132}
+                lines={drawnLines}
+                width={96}
+                surface="var(--paper-raised)"
                 label={`Hexagrama ${result.hex}: ${result.english}`}
               />
             </div>
@@ -66,11 +113,7 @@ export default function Reading() {
               <p className={styles.resultKicker} lang="en">
                 Hexagram {result.hex}
               </p>
-              <h1
-                className={styles.resultName}
-                ref={headingRef}
-                tabIndex={-1}
-              >
+              <h1 className={styles.resultName} ref={headingRef} tabIndex={-1}>
                 <span className={styles.resultGlyph}>{result.hex_font}</span>
                 <span lang="en">{result.english}</span>
               </h1>
@@ -122,6 +165,33 @@ export default function Reading() {
                 </section>
               )}
             </div>
+          )}
+
+          {changed && <hr className={styles.divider} />}
+
+          {changed && (
+            <Link className={styles.changed} to={`/leitura/${changed.hex}`}>
+              <Hexagram
+                binary={changed.binary}
+                width={96}
+                surface="var(--paper-raised)"
+                label={`Hexagrama transformado ${changed.hex}: ${changed.english}`}
+              />
+              <span className={styles.changedText}>
+                <span className={styles.changedLabel}>
+                  As linhas mutáveis levam a
+                </span>
+                <strong className={styles.changedName}>
+                  {changed.hex}. <span lang="en">{changed.english}</span>
+                  <span className={styles.changedChinese} lang="zh-Hant">
+                    {changed.trad_chinese}
+                  </span>
+                </strong>
+              </span>
+              <span className={styles.changedArrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
           )}
 
           <button
