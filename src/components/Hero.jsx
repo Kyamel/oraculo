@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import OracleButton from "./OracleButton";
 import Hexagram from "./Hexagram";
-import { heroWisdom, consultNotice } from "../data/landingContent";
-import { scrollToSection } from "../lib/navigation";
-import heroImg from "../assets/iching/hero-song-print.jpg";
-import styles from "./HeroSection.module.css";
+import { heroWisdom } from "../data/heroWisdom";
+import heroImg from "../assets/I_Ching_Song_Dynasty_print.jpg";
+import styles from "./Hero.module.css";
 
 const ROTATION_MS = 5500;
 
 /**
- * Herói da landing page: apresentação + chamada para ação +
- * um hexagrama que se alterna (texto dinâmico).
+ * Hero da página: apresentação + imagem com legenda + um hexagrama que se
+ * alterna (texto dinâmico). Sem chamada para ação — a consulta começa no
+ * formulário logo abaixo.
  */
-function HeroSection() {
+function Hero() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -33,33 +32,22 @@ function HeroSection() {
   const current = heroWisdom[index];
 
   return (
-    <section className={styles.hero} id="inicio">
+    <section className={styles.hero}>
       <div className={`container ${styles.inner}`}>
         <div className={styles.copy}>
-          <p className="eyebrow">易經 · Livro das Mutações</p>
+          <p className={styles.eyebrow}>
+            <span className={styles.eyebrowMark}>易經</span>
+            <span aria-hidden="true" className={styles.eyebrowDot}>
+              ·
+            </span>
+            <span className={styles.eyebrowText}>Livro das Mutações</span>
+          </p>
           <h1 className={styles.title}>O oráculo que devolve perguntas</h1>
           <p className={styles.lead}>
-            Uma experiência interativa de consulta ao I Ching, o oráculo
-            chinês com mais de três mil anos. Aqui ele não prevê o futuro;
-            ele oferece uma imagem simbólica para você refletir sobre a sua
-            questão.
+            Uma experiência interativa de consulta ao I Ching, o oráculo chinês
+            com mais de três mil anos. Aqui ele não prevê o futuro; ele oferece
+            uma imagem simbólica para você refletir sobre a sua questão.
           </p>
-
-          <div className={styles.actions}>
-            <OracleButton notice={consultNotice}>
-              Perguntar ao Oráculo
-            </OracleButton>
-            <a
-              href="#sobre"
-              className={styles.secondaryLink}
-              onClick={(event) => {
-                event.preventDefault();
-                scrollToSection("sobre");
-              }}
-            >
-              Entender antes de começar →
-            </a>
-          </div>
         </div>
 
         <div className={styles.figureWrap}>
@@ -68,8 +56,7 @@ function HeroSection() {
               className={styles.figureImg}
               src={heroImg}
               alt="Página de rosto de uma edição do I Ching impressa na dinastia Song, por volta de 1100."
-              width="1299"
-              height="2148"
+              loading="lazy"
             />
             <figcaption className={styles.figureCaption}>
               Edição do I Ching, dinastia Song (c. 1100)
@@ -79,17 +66,14 @@ function HeroSection() {
           <div className={styles.wisdom} aria-label="Hexagramas do I Ching">
             <div key={index} className={styles.wisdomBody}>
               <Hexagram
-                lines={current.lines}
+                binary={current.binary}
                 width={62}
                 label={`Hexagrama: ${current.name}`}
-                surface="var(--paper-raised)"
               />
               <div>
                 <p className={styles.wisdomName}>
                   {current.name}
-                  <span className={styles.wisdomChinese}>
-                    {current.chinese}
-                  </span>
+                  <span className={styles.wisdomChinese}>{current.chinese}</span>
                 </p>
                 <p className={styles.wisdomPhrase}>{current.phrase}</p>
               </div>
@@ -109,7 +93,9 @@ function HeroSection() {
                   <button
                     key={item.name}
                     type="button"
-                    className={`${styles.dot} ${i === index ? styles.dotActive : ""}`}
+                    className={`${styles.dot} ${
+                      i === index ? styles.dotActive : ""
+                    }`}
                     aria-label={`Mostrar o hexagrama ${item.name}`}
                     aria-current={i === index}
                     onClick={() => setIndex(i)}
@@ -124,4 +110,4 @@ function HeroSection() {
   );
 }
 
-export default HeroSection;
+export default Hero;

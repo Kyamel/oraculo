@@ -14,13 +14,28 @@ function normalizeLine(line) {
   return { type: line.type, changing: Boolean(line.changing) };
 }
 
-function Hexagram({
+/**
+ * Converte o `binary` do dataset (string/número, ordem visual de cima para
+ * baixo, 1 = yang / 0 = yin) no array de linhas que o <Hexagram> espera
+ * (de baixo para cima).
+ */
+function binaryToLines(binary) {
+  return String(binary)
+    .padStart(6, "0")
+    .split("")
+    .reverse()
+    .map((bit) => (bit === "1" ? "yang" : "yin"));
+}
+
+export function Hexagram({
   lines,
+  binary,
   width = 96,
   label,
   surface = "var(--paper-raised)",
 }) {
-  const rows = lines.map(normalizeLine);
+  const source = binary != null ? binaryToLines(binary) : lines;
+  const rows = source.map(normalizeLine);
   const count = rows.length;
   const lineH = 13;
   const gap = 9;
