@@ -179,7 +179,7 @@ export default function Reading() {
               />
               <span className={styles.changedText}>
                 <span className={styles.changedLabel}>
-                  As linhas mutáveis levam a
+                  As linhas mutáveis levam à
                 </span>
                 <strong className={styles.changedName}>
                   {changed.hex}. <span lang="en">{changed.english}</span>
