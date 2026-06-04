@@ -4,13 +4,8 @@ import Reading from "./components/Reading";
 import Footer from "./components/Footer";
 
 /**
- * Rotas:
- *  - "/"                       → consulta (hero + pergunta + moedas)
- *  - "/leitura/:hex"           → leitura do hexagrama (conteúdo Wilhelm)
- *  - "/leitura/:hex/:changing" → idem, com as posições das linhas mutáveis
- *                                (ex.: /leitura/3/14) — reconstrói marcas e
- *                                hexagrama transformado em refresh/link direto
- * O Footer fica fora das rotas, então aparece nas duas páginas.
+ * Oráculo IChing - Lucas dos Anjos Camelo
+ *
  * HashRouter mantém o roteamento no fragmento (#), funcionando em
  * hospedagem estática sem configuração de servidor.
  */
