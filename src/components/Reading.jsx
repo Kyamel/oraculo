@@ -104,7 +104,6 @@ export default function Reading() {
               <Hexagram
                 lines={drawnLines}
                 width={96}
-                surface="var(--paper-raised)"
                 label={`Hexagrama ${result.hex}: ${result.english}`}
               />
             </div>
@@ -174,7 +173,6 @@ export default function Reading() {
               <Hexagram
                 binary={changed.binary}
                 width={96}
-                surface="var(--paper-raised)"
                 label={`Hexagrama transformado ${changed.hex}: ${changed.english}`}
               />
               <span className={styles.changedText}>

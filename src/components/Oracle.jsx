@@ -5,7 +5,7 @@ import Hero from "./Hero.jsx";
 import hexagrams from "../data/i-ching-basic.js";
 import styles from "./Oracle.module.css";
 
-// Índice de busca: binário visual (cima → baixo) → hexagrama.
+// Índice de busca: binário visual.
 const byBinary = new Map(
   hexagrams.map((h) => [String(h.binary).padStart(6, "0"), h]),
 );
@@ -212,7 +212,6 @@ export default function Oracle() {
               <Hexagram
                 lines={lines.map(toDrawLine)}
                 width={120}
-                surface="var(--paper-raised)"
                 label={`Hexagrama em formação: ${lines.length} de ${TOTAL_LINES} linhas`}
               />
             </div>

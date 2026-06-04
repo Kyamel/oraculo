@@ -12,10 +12,16 @@ const FEATURED = [1, 2, 11, 24, 52, 61];
 // Mostra só um trecho do texto no preview (a leitura completa vive em /leitura).
 function preview(text, max = 60) {
   const clean = String(text || "").trim();
-  if (clean.length <= max) return clean;
+
+  if (clean.length <= max) {
+    return clean;
+  }
+
   const cut = clean.slice(0, max);
   const lastSpace = cut.lastIndexOf(" ");
-  return `${cut.slice(0, lastSpace > 40 ? lastSpace : max).trimEnd()}…`;
+  const end = lastSpace > 40 ? lastSpace : max;
+
+  return `${cut.slice(0, end).trimEnd()}…`;
 }
 
 // Dados reais da tradução Wilhelm-Baynes para os cards do hero.
