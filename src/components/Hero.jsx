@@ -72,7 +72,7 @@ function Hero() {
             </span>
             <span className={styles.eyebrowText}>Livro das Mutações</span>
           </p>
-          <h1 className={styles.title}>O oráculo que devolve perguntas</h1>
+          <h1 className={styles.title}>O Espelho das Mutações</h1>
           <p className={styles.lead}>
             Uma experiência interativa de consulta ao I Ching, o oráculo chinês
             com mais de três mil anos. Aqui ele não prevê o futuro; ele oferece
