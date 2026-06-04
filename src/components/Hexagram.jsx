@@ -1,12 +1,3 @@
-/**
- * Desenha um hexagrama (ou parte dele) como SVG.
- *
- * Props:
- *  - lines:   array de linhas, de baixo para cima. Cada linha pode ser
- *             a string "yin" / "yang", ou { type: "yin"|"yang", changing: bool }.
- *  - width:   largura em px (a altura é calculada).
- *  - label:   rótulo acessível (aria-label).
- */
 function normalizeLine(line) {
   if (typeof line === "string") return { type: line, changing: false };
   return { type: line.type, changing: Boolean(line.changing) };
@@ -25,6 +16,19 @@ function binaryToLines(binary) {
     .map((bit) => (bit === "1" ? "yang" : "yin"));
 }
 
+/**
+ * Desenha um hexagrama (ou parte dele) como SVG.
+ *
+ * Aceita as linhas de duas formas (use uma ou outra):
+ *  - lines:   array de linhas, de baixo para cima. Cada linha pode ser
+ *             a string "yin" / "yang", ou { type: "yin"|"yang", changing: bool }.
+ *  - binary:  `binary` do dataset (string/número, ordem visual de cima para
+ *             baixo, 1 = yang / 0 = yin). Tem prioridade sobre `lines`.
+ *
+ * Outras props:
+ *  - width:   largura em px (a altura é calculada). Padrão: 96.
+ *  - label:   rótulo acessível (aria-label).
+ */
 export function Hexagram({ lines, binary, width = 96, label }) {
   const source = binary != null ? binaryToLines(binary) : lines;
   const rows = source.map(normalizeLine);
