@@ -38,8 +38,7 @@ const heroWisdom = FEATURED.map((n) => {
 
 /**
  * Hero da página: apresentação + imagem com legenda + um hexagrama que se
- * alterna (texto dinâmico). Sem chamada para ação — a consulta começa no
- * formulário logo abaixo.
+ * alterna (texto dinâmico).
  */
 function Hero() {
   const [index, setIndex] = useState(0);

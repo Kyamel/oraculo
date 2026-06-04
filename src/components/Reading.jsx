@@ -35,7 +35,7 @@ function trigramLabel(trigram) {
 /**
  * Página /leitura/:hex/:changing: mostra o hexagrama e o conteúdo da tradução
  * Wilhelm-Baynes. Tudo é reconstruído pela URL — número do hexagrama mais as
- * posições das linhas mutáveis (ex.: /leitura/3/14) —, então as marcas de
+ * posições das linhas mutáveis (ex.: /leitura/3/14); então as marcas de
  * mutação e o hexagrama transformado funcionam em refresh/link direto. Só a
  * pergunta, quando houver, chega pelo state. Número inválido volta para a
  * consulta.
