@@ -40,21 +40,17 @@
 }
 
 /* --- Botões --- */
-.primary,
-.secondary {
+.primary {
+  align-self: flex-start;
   font: inherit;
   font-weight: 600;
   border-radius: var(--radius-sm);
   padding: 13px 24px;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: background-color 0.16s ease, opacity 0.16s ease;
-}
-
-.primary {
-  align-self: flex-start;
   background: var(--cinnabar);
   color: #fdf6e6;
+  transition: background-color 0.16s ease, opacity 0.16s ease;
 }
 .primary:hover:not(:disabled) {
   background: var(--cinnabar-dark);
@@ -64,14 +60,34 @@
   cursor: not-allowed;
 }
 
-.secondary {
+/* Botão destacado de volta para a consulta (página de resultado). */
+.backButton {
   align-self: flex-start;
-  background: transparent;
-  color: var(--ink);
-  border-color: var(--line-strong);
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: inherit;
+  font-weight: 700;
+  padding: 15px 28px;
+  cursor: pointer;
+  color: #fdf6e6;
+  background: var(--cinnabar);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.16s ease, transform 0.16s ease;
 }
-.secondary:hover {
-  background: var(--paper-deep);
+.backButton:hover {
+  background: var(--cinnabar-dark);
+}
+.backButton:hover span {
+  transform: translateX(-3px);
+}
+.backButton span {
+  font-size: 1.2em;
+  line-height: 1;
+  transition: transform 0.16s ease;
 }
 
 /* --- Modal de lançamento --- */

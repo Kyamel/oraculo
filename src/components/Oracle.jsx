@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Hexagram } from "./Hexagram.jsx";
 import Hero from "./Hero.jsx";
 import hexagrams from "../data/i-ching-basic.js";
-import wilhelm from "../data/iching_wilhelm_translation.js";
 import styles from "./Oracle.module.css";
 
 // Índice de busca: binário visual (cima → baixo) → hexagrama.
@@ -36,7 +36,8 @@ function lookupHexagram(lines) {
 const TOTAL_LINES = 6;
 
 export default function Oracle() {
-  const [phase, setPhase] = useState("ask"); // "ask" | "casting" | "result"
+  const navigate = useNavigate();
+  const [phase, setPhase] = useState("ask"); // "ask" | "casting"
   const [question, setQuestion] = useState("");
   const [lines, setLines] = useState([]);
   const [coins, setCoins] = useState(() => [
@@ -46,7 +47,6 @@ export default function Oracle() {
   ]); // faces do último lançamento
   const [rolling, setRolling] = useState(false);
 
-  const consultButtonRef = useRef(null);
   const modalRef = useRef(null);
 
   const trimmedQuestion = question.trim();
@@ -56,10 +56,9 @@ export default function Oracle() {
     [isComplete, lines],
   );
 
-  // Foco vai para o modal ao abrir; volta para o botão de consulta ao fechar.
+  // Foco vai para o modal ao abrir.
   useEffect(() => {
     if (phase === "casting") modalRef.current?.focus();
-    else if (phase === "result") consultButtonRef.current?.focus();
   }, [phase]);
 
   // Esc fecha o modal de lançamento e volta para a pergunta.
@@ -97,50 +96,37 @@ export default function Oracle() {
     setPhase("ask");
   };
 
-  const handleReveal = () => setPhase("result");
-
-  const handleNewConsultation = () => {
-    setQuestion("");
-    setLines([]);
-    setPhase("ask");
+  const handleReveal = () => {
+    if (!result) return;
+    navigate("/response", { state: { question: trimmedQuestion, result } });
   };
 
   return (
-    <section className={styles.oracle}>
+    <main id="conteudo" className={styles.oracle}>
       <Hero />
 
       <div className={`container ${styles.consult}`}>
-        {phase === "result" && result ? (
-          <ResultCard
-            question={question}
-            result={result}
-            onNew={handleNewConsultation}
-            newButtonRef={consultButtonRef}
+        <form className={styles.ask} onSubmit={handleStart}>
+          <label className={styles.label} htmlFor="question">
+            Qual é a sua pergunta?
+          </label>
+          <textarea
+            id="question"
+            className={styles.input}
+            value={question}
+            onChange={(event) => setQuestion(event.target.value)}
+            rows={3}
+            maxLength={280}
+            placeholder="Ex.: Como devo lidar com a mudança que estou enfrentando?"
           />
-        ) : (
-          <form className={styles.ask} onSubmit={handleStart}>
-            <label className={styles.label} htmlFor="question">
-              Qual é a sua pergunta?
-            </label>
-            <textarea
-              id="question"
-              className={styles.input}
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-              rows={3}
-              maxLength={280}
-              placeholder="Ex.: Como devo lidar com a mudança que estou enfrentando?"
-            />
-            <button
-              type="submit"
-              className={styles.primary}
-              disabled={!trimmedQuestion}
-              ref={consultButtonRef}
-            >
-              Lançar as moedas
-            </button>
-          </form>
-        )}
+          <button
+            type="submit"
+            className={styles.primary}
+            disabled={!trimmedQuestion}
+          >
+            Lançar as moedas
+          </button>
+        </form>
       </div>
 
       {phase === "casting" && (
@@ -218,95 +204,6 @@ export default function Oracle() {
           </div>
         </div>
       )}
-    </section>
-  );
-}
-
-function trigramLabel(trigram) {
-  if (!trigram) return "";
-  const symbolic = String(trigram.symbolic || "").replace(/,\s*$/, "");
-  return [trigram.alchemical, symbolic].filter(Boolean).join(" · ");
-}
-
-function ResultCard({ question, result, onNew, newButtonRef }) {
-  const detail = wilhelm[String(result.hex)] || null;
-
-  return (
-    <div className={styles.result} aria-live="polite">
-      <p className={styles.questionRecap}>
-        <span className={styles.questionLabel}>Sua pergunta</span>
-        {question}
-      </p>
-
-      <div className={styles.resultBody}>
-        <div className={styles.hexStage}>
-          <Hexagram
-            binary={result.binary}
-            width={132}
-            label={`Hexagrama ${result.hex}: ${result.english}`}
-          />
-        </div>
-
-        <div className={styles.resultText}>
-          <p className={styles.resultKicker}>Hexagram {result.hex}</p>
-          <h2 className={styles.resultName}>
-            <span className={styles.resultGlyph}>{result.hex_font}</span>
-            {result.english}
-          </h2>
-          <p className={styles.resultChinese}>
-            {result.trad_chinese} · {result.pinyin}
-          </p>
-          {detail && (
-            <p className={styles.trigrams}>
-              <span>Above — {trigramLabel(detail.wilhelm_above)}</span>
-              <span>Below — {trigramLabel(detail.wilhelm_below)}</span>
-            </p>
-          )}
-        </div>
-      </div>
-
-      {detail && (
-        <div className={styles.detail}>
-          {detail.wilhelm_symbolic && (
-            <p className={styles.symbolic}>{detail.wilhelm_symbolic}</p>
-          )}
-
-          {detail.wilhelm_judgment?.text && (
-            <section className={styles.passage}>
-              <h3 className={styles.passageTitle}>The Judgment</h3>
-              <p className={styles.passageText}>{detail.wilhelm_judgment.text}</p>
-              {detail.wilhelm_judgment.comments && (
-                <details className={styles.comments}>
-                  <summary>Commentary</summary>
-                  <p>{detail.wilhelm_judgment.comments}</p>
-                </details>
-              )}
-            </section>
-          )}
-
-          {detail.wilhelm_image?.text && (
-            <section className={styles.passage}>
-              <h3 className={styles.passageTitle}>The Image</h3>
-              <p className={styles.passageText}>{detail.wilhelm_image.text}</p>
-              {detail.wilhelm_image.comments && (
-                <details className={styles.comments}>
-                  <summary>Commentary</summary>
-                  <p>{detail.wilhelm_image.comments}</p>
-                </details>
-              )}
-            </section>
-          )}
-        </div>
-      )}
-
-      <button
-        type="button"
-        className={styles.secondary}
-        onClick={onNew}
-        ref={newButtonRef}
-      >
-        Nova consulta
-      </button>
-    </div>
+    </main>
   );
 }

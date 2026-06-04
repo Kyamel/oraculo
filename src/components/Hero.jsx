@@ -1,10 +1,34 @@
 import { useEffect, useState } from "react";
 import Hexagram from "./Hexagram";
-import { heroWisdom } from "../data/heroWisdom";
+import wilhelm from "../data/iching_wilhelm_translation.js";
 import heroImg from "../assets/I_Ching_Song_Dynasty_print.jpg";
 import styles from "./Hero.module.css";
 
 const ROTATION_MS = 5500;
+
+// Hexagramas em destaque na rotação do hero.
+const FEATURED = [1, 2, 11, 24, 52, 61];
+
+// Mostra só um trecho do texto no preview (a resposta completa vive em /response).
+function preview(text, max = 120) {
+  const clean = String(text || "").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${cut.slice(0, lastSpace > 40 ? lastSpace : max).trimEnd()}…`;
+}
+
+// Dados reais da tradução Wilhelm-Baynes para os cards do hero.
+const heroWisdom = FEATURED.map((n) => {
+  const h = wilhelm[String(n)];
+  return {
+    hex: n,
+    name: h.english,
+    chinese: h.trad_chinese,
+    binary: h.binary,
+    phrase: preview(h.wilhelm_judgment?.text || h.wilhelm_image?.text),
+  };
+});
 
 /**
  * Hero da página: apresentação + imagem com legenda + um hexagrama que se
@@ -91,7 +115,7 @@ function Hero() {
               <div className={styles.dots} role="tablist">
                 {heroWisdom.map((item, i) => (
                   <button
-                    key={item.name}
+                    key={item.hex}
                     type="button"
                     className={`${styles.dot} ${
                       i === index ? styles.dotActive : ""

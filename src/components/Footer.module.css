@@ -9,6 +9,7 @@
   background-color: var(--footer-surface);
   color: var(--footer-muted);
   font-size: 0.85rem;
+  text-align: center;
 }
 
 .footer a {
