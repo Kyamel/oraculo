@@ -98,7 +98,7 @@ export default function Oracle() {
 
   const handleReveal = () => {
     if (!result) return;
-    navigate("/response", { state: { question: trimmedQuestion, result } });
+    navigate(`/leitura/${result.hex}`, { state: { question: trimmedQuestion } });
   };
 
   return (

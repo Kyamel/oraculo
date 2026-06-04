@@ -1,8 +1,17 @@
 import { useEffect, useRef } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { Hexagram } from "./Hexagram.jsx";
+import hexagrams from "../data/i-ching-basic.js";
 import wilhelm from "../data/iching_wilhelm_translation.js";
 import styles from "./Oracle.module.css";
+
+// Índice por número do hexagrama, para reconstruir o resultado pela URL.
+const byHex = new Map(hexagrams.map((h) => [h.hex, h]));
 
 function trigramLabel(trigram) {
   if (!trigram) return "";
@@ -11,23 +20,26 @@ function trigramLabel(trigram) {
 }
 
 /**
- * Página /response: mostra o hexagrama sorteado e o conteúdo da tradução
- * Wilhelm-Baynes. Os dados chegam pelo state da navegação; sem eles
- * (acesso direto/refresh), volta para a consulta.
+ * Página /leitura/:hex: mostra o hexagrama e o conteúdo da tradução
+ * Wilhelm-Baynes. O hexagrama é reconstruído pelo número na URL (funciona em
+ * refresh/link direto); a pergunta, quando houver, chega pelo state. Número
+ * inválido volta para a consulta.
  */
-export default function Response() {
+export default function Reading() {
   const navigate = useNavigate();
+  const { hex } = useParams();
   const { state } = useLocation();
   const headingRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     headingRef.current?.focus();
-  }, []);
+  }, [hex]);
 
-  if (!state?.result) return <Navigate to="/" replace />;
+  const result = byHex.get(Number(hex)) || null;
+  if (!result) return <Navigate to="/" replace />;
 
-  const { question, result } = state;
+  const question = state?.question;
   const detail = wilhelm[String(result.hex)] || null;
 
   return (
@@ -51,20 +63,22 @@ export default function Response() {
             </div>
 
             <div className={styles.resultText}>
-              <p className={styles.resultKicker}>Hexagram {result.hex}</p>
+              <p className={styles.resultKicker} lang="en">
+                Hexagram {result.hex}
+              </p>
               <h1
                 className={styles.resultName}
                 ref={headingRef}
                 tabIndex={-1}
               >
                 <span className={styles.resultGlyph}>{result.hex_font}</span>
-                {result.english}
+                <span lang="en">{result.english}</span>
               </h1>
-              <p className={styles.resultChinese}>
+              <p className={styles.resultChinese} lang="zh-Hant">
                 {result.trad_chinese} · {result.pinyin}
               </p>
               {detail && (
-                <p className={styles.trigrams}>
+                <p className={styles.trigrams} lang="en">
                   <span>Above — {trigramLabel(detail.wilhelm_above)}</span>
                   <span>Below — {trigramLabel(detail.wilhelm_below)}</span>
                 </p>
@@ -73,7 +87,7 @@ export default function Response() {
           </div>
 
           {detail && (
-            <div className={styles.detail}>
+            <div className={styles.detail} lang="en">
               {detail.wilhelm_symbolic && (
                 <p className={styles.symbolic}>{detail.wilhelm_symbolic}</p>
               )}

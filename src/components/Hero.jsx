@@ -9,8 +9,8 @@ const ROTATION_MS = 5500;
 // Hexagramas em destaque na rotação do hero.
 const FEATURED = [1, 2, 11, 24, 52, 61];
 
-// Mostra só um trecho do texto no preview (a resposta completa vive em /response).
-function preview(text, max = 120) {
+// Mostra só um trecho do texto no preview (a leitura completa vive em /leitura).
+function preview(text, max = 80) {
   const clean = String(text || "").trim();
   if (clean.length <= max) return clean;
   const cut = clean.slice(0, max);
@@ -91,15 +91,19 @@ function Hero() {
             <div key={index} className={styles.wisdomBody}>
               <Hexagram
                 binary={current.binary}
-                width={62}
+                width={64}
                 label={`Hexagrama: ${current.name}`}
               />
               <div>
                 <p className={styles.wisdomName}>
-                  {current.name}
-                  <span className={styles.wisdomChinese}>{current.chinese}</span>
+                  <span lang="en">{current.name}</span>
+                  <span className={styles.wisdomChinese} lang="zh-Hant">
+                    {current.chinese}
+                  </span>
                 </p>
-                <p className={styles.wisdomPhrase}>{current.phrase}</p>
+                <p className={styles.wisdomPhrase} lang="en">
+                  {current.phrase}
+                </p>
               </div>
             </div>
 
