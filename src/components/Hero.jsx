@@ -4,7 +4,7 @@ import wilhelm from "../data/iching_wilhelm_translation.js";
 import heroImg from "../assets/I_Ching_Song_Dynasty_print.jpg";
 import styles from "./Hero.module.css";
 
-const ROTATION_MS = 5500;
+const ROTATION_MS = 5000;
 
 // Hexagramas em destaque na rotação do hero.
 const FEATURED = [1, 2, 11, 24, 52, 61];
