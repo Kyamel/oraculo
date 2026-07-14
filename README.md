@@ -126,11 +126,11 @@ oraculo/
 ## Como rodar
 
 ```bash
-npm install      # instalar dependências
-npm run dev      # ambiente de desenvolvimento (hot reload)
-npm run build    # build de produção (saída em dist/)
-npm run preview  # pré-visualizar o build
-npm run lint     # checar o lint
+pnpm install      # instalar dependências
+pnpm dev          # ambiente de desenvolvimento (hot reload)
+pnpm build        # build de produção (saída em dist/)
+pnpm preview      # pré-visualizar o build
+pnpm lint         # checar o lint
 ```
 
 O Vite sobe por padrão em `http://localhost:5173`.
